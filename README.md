@@ -8,17 +8,17 @@
 
 3- Pantalla principal ✅
 
-4- Pantalla de vuelos más baratos/rapidos
+4- Pantalla "Cuenta" ✅
 
-5- Pantalla de vuelos low-cost
+5- Pantalla "Ajustes de cuenta" ✅
 
-6- Pantalla "Avisos"
+6- Pantalla de vuelos más baratos/rapidos
 
-7- Pantalla "Cuenta"
+7- Pantalla de vuelos low-cost
 
-8- Pantalla "Vuelos/Billetes"
+8- Pantalla "Avisos"
 
-9- Pantalla "Ajustes de cuenta"
+9- Pantalla "Vuelos/Billetes"
 
 
 
