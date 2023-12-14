@@ -39,7 +39,7 @@
 
 5- Pantalla "Recomendos para el usuario".
 
-6- Pantalla de "Lugares guardados por usuario".
+6- Pantalla de "Lugares guardados por usuario". ✅
 
 7- Pantalla de "Rutas". ✅
 
