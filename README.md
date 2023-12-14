@@ -16,7 +16,7 @@
 
 7- Pantalla "Resultados búsqueda". ✅
 
-8- Pantalla de vuelos "Escapadas baratas."
+8- Pantalla de vuelos "Escapadas baratas."✅
 
 9- Pantalla "Guia: Mi primer vuelo". ✅
 
@@ -33,7 +33,7 @@
 
 2- Pantalla de "Sign up". ✅
 
-3- DrawerLayout.
+3- DrawerLayout.✅
 
 4- Pantalla "HotSpots (mejor valorados por la gente)". ✅
 
@@ -47,7 +47,7 @@
 
 9- Pantalla "Ajustes de cuenta".
 
-10- Pantalla "Editar preferencias".
+10- Pantalla "Editar preferencias".✅
 
 11- Pantalla "Mapa general".
 
