@@ -41,7 +41,7 @@
 
 6- Pantalla de "Lugares guardados por usuario".
 
-7- Pantalla de "Rutas".
+7- Pantalla de "Rutas". ✅
 
 8- Pantalla "Cuenta".
 
@@ -51,5 +51,5 @@
 
 11- Pantalla "Mapa general".
 
-12- Pantalla "Modo Verano (playas, etc)".
+12- Pantalla "Modo Verano (playas, etc)". ✅
 
