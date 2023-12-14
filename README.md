@@ -37,7 +37,7 @@
 
 4- Pantalla "HotSpots (mejor valorados por la gente)". ✅
 
-5- Pantalla "Recomendos para el usuario".
+5- Pantalla "Recomendos para el usuario". ✅
 
 6- Pantalla de "Lugares guardados por usuario". ✅
 
