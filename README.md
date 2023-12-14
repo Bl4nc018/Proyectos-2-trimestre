@@ -49,6 +49,8 @@
 
 10- Pantalla "Editar preferencias".✅
 
+11- Pantalla "Añadir ubicación".✅
+
 11- Pantalla "Mapa general". ✅
 
 12- Pantalla "Modo Verano (playas, etc)". ✅
