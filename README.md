@@ -18,7 +18,7 @@
 
 8- Pantalla de vuelos "Escapadas baratas."
 
-9- Pantalla "Guia: Mi primer vuelo".
+9- Pantalla "Guia: Mi primer vuelo". ✅
 
 10- Pantalla "Avisos".
 
