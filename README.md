@@ -14,7 +14,7 @@
 
 6- Pantalla "Ajustes de cuenta". ✅
 
-7- Pantalla "Resultados búsqueda".
+7- Pantalla "Resultados búsqueda". ✅
 
 8- Pantalla de vuelos "Escapadas baratas."
 
@@ -22,7 +22,7 @@
 
 10- Pantalla "Avisos".
 
-11- Pantalla "Vuelos/Cancelar vuelo".
+11- Pantalla "Vuelos/Cancelar vuelo". ✅
 
 12- Pantalla principal.
 
