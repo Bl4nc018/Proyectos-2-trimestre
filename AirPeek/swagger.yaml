@@ -29,27 +29,27 @@ paths:
               schema:
                 example:
                   - token: 19273348274832
-	   404:
-		description: The email doesn't exist
-		content:
-		  application/json:
-		    schema:
-			 example:
-			   - token: Email already registered
-	   401:
-		description: The email is not valid
-		content:
-		  application/json:
-		    schema:
-			 example:
-			   - token: Invalid email
-	   401:
-		description: The password is not valid
-		content:
-		  application/json:
-		    schema:
-			 example:
-			   - token: Invalid password
+        404:
+        description: The email doesn't exist
+        content:
+          application/json:
+            schema:
+          example:
+            - token: Email already registered
+        401:
+        description: The email is not valid
+        content:
+          application/json:
+            schema:
+          example:
+            - token: Invalid email
+        401:
+        description: The password is not valid
+        content:
+          application/json:
+            schema:
+          example:
+            - token: Invalid password
   /register:
     post:
       summary: Register a new user
@@ -73,7 +73,7 @@ paths:
           description: The user's home country
           schema:
             type: string
-          example: "España"
+          example: "Espaï¿½a"
         - name: password
           in: query
           required: true
