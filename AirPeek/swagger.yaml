@@ -5,17 +5,15 @@ info:
 servers:
   - url: http://localhost:8000
 tags:
-  - name: Login
-    description: Login to the app
-  - name: Register
-    description: Register a new user
+  - name: User
+    description: User actions 
   - name: Flights
-    description: Get all flights
+    description: Flights info
 paths:
   /login:
     post:
       tags:
-        - Login
+        - User
       summary: Logs user into the system
       operationId: loginUser
       parameters:
@@ -30,7 +28,9 @@ paths:
           required: true
           description: The password of the user
           schema:
-            type: string 
+            type: string
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: Email exists and password is correct
@@ -38,30 +38,6 @@ paths:
             application/json:    
               schema:
                 example:
-<<<<<<< HEAD
-                  - token: 19273348274832
-        404:
-        description: The email doesn't exist
-        content:
-          application/json:
-            schema:
-          example:
-            - token: Email already registered
-        401:
-        description: The email is not valid
-        content:
-          application/json:
-            schema:
-          example:
-            - token: Invalid email
-        401:
-        description: The password is not valid
-        content:
-          application/json:
-            schema:
-          example:
-            - token: Invalid password
-=======
                   token: 19273348274832
         404:
           description: The email doesn't exist
@@ -77,7 +53,6 @@ paths:
               schema:
                 example:
                   token: Invalid email or password
->>>>>>> e8f37c1ae1f9b2cd2cd36c5a3b286101403456f8
   /register:
     post:
       tags:
@@ -103,11 +78,7 @@ paths:
           description: The user's home country
           schema:
             type: string
-<<<<<<< HEAD
-          example: "Espa�a"
-=======
           example: "España"
->>>>>>> e8f37c1ae1f9b2cd2cd36c5a3b286101403456f8
         - name: password
           in: query
           required: true
@@ -120,7 +91,7 @@ paths:
           description: The user's birthdate
           schema:
             type: string
-          example: "2001/03/24"
+          example: "24/03/2001"
       responses:
         200:
           description: User registered
@@ -136,11 +107,119 @@ paths:
               schema:
                 example:
                   register: not_ok
+  /profile:
+    get:
+      tags:
+        - User
+      summary: Get user profile
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: User profile retrieved
+          content:
+            application/json:    
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  country:
+                    type: string
+                  birthdate:
+                    type: string
+        400:
+          description: Any parameter is not valid
+          content:
+            application/json:    
+              schema:
+                example:
+                  message: not_ok
+  /edit_profile:
+    put:
+      tags:
+        - User
+      summary: Update user profile
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: The full name of the user
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          description: The email of the user
+          schema:
+            type: string
+          example: "matusalen@fpcoruna.afundacion.org"
+        - name: country
+          in: query
+          required: true
+          description: The user's home country
+          schema:
+            type: string
+          example: "España"
+        - name: password
+          in: query
+          required: true
+          description: The user's password
+          schema:
+            type: string
+        - name: birthdate
+          in: query
+          required: true
+          description: The user's birthdate
+          schema:
+            type: string
+          example: "24/03/2001"
+      responses:
+        200:
+          description: User profile updated
+          content:
+            application/json:    
+              schema:
+                example:
+                  update: ok
+        400:
+          description: Any parameter is not valid
+          content:
+            application/json:    
+              schema:
+                example:
+                  update: not_ok
+  /delete_account:
+    delete:
+      tags:
+        - User
+      summary: Delete user account
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: User account deleted
+          content:
+            application/json:    
+              schema:
+                example:
+                  delete: ok
+        401:
+          description: Unauthorized
+          content:
+            application/json:    
+              schema:
+                example:
+                  message: Unauthorized
   /flights:
     get:
       tags:
-        - Flights
-      summary: Get all flights
+        - User
+      summary: Get all flights added to user
       description: Returns a list of all flights
       responses:
         200:
@@ -161,15 +240,83 @@ paths:
                     depart_date:
                       type: string
                       format: date-time
-                    return_date:
+                    return_date:  
                       type: string
                       format: date-time
-                    value:
+                    value:  ## Precio.
                       type: number
-                    number_of_changes:
+                    number_of_changes: ## Número de transbordos.
                       type: integer
         404:
           description: No flights found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /delete_flight/{id}:
+    delete:
+      tags:
+        - User
+      summary: Delete a flight
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the flight to delete
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Flight deleted
+          content:
+            application/json:    
+              schema:
+                example:
+                  delete: Flight deleted
+        404:
+          description: Flight not found
+          content:
+            application/json:    
+              schema:
+                example:
+                  message: Flight not found
+  /special-offers:
+    get:
+      tags:
+        - Flights
+      summary: Get special offers which can interest the user
+      description: Returns a list of some special flight offers that stand out for being affordable
+      responses:
+        200:
+          description: A list of special offers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    origin:
+                      type: string
+                    destination:
+                      type: string
+                    depart_date:
+                      type: string
+                      format: date-time
+                    return_date: 
+                      type: string
+                      format: date-time
+                    value:  ## Precio.
+                      type: number
+                    number_of_changes: ## Número de transbordos.
+                      type: integer
+        404:
+          description: No special offers found
           content:
             application/json:
               schema:
