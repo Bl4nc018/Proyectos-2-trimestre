@@ -193,6 +193,7 @@ paths:
               schema:
                 example:
                   update: not_ok
+  # we don't have this functionality
   /delete_account:
     delete:
       tags:
@@ -215,6 +216,139 @@ paths:
               schema:
                 example:
                   message: Unauthorized
+  /search_flights:
+    get:
+    summary: Returns searched flights
+    parameters:
+      - name: origin
+        in: query
+         required: true
+         description: Where the flight should depart from
+         schema:
+           type: string
+           example: "LPA"
+      - name: destination
+        in: query
+        required: true
+        description: Where the flight should arrive at
+        schema:
+          type: string
+        example: "AOK"
+      - name: d_date
+        in: query
+        required: true
+        description: The departure date
+        schema:
+          type: string
+          example: "24/03/2001"
+      - name: r_date
+        in: query
+        required: false
+        description: The return date
+        schema:
+          type: string
+        example: "27/03/2001"
+      - name: adults
+        in: query
+        required: true
+        description: The number of adults
+        schema:
+          type: integer
+      # the following two may or may not actually do anything more than increasing the number of adults
+      - name: children
+        in: query
+        required: true
+        description: The number of children
+        schema:
+          type: integer
+      - name: toddlers
+        in: query
+        required: true
+        description: The number of toddlers
+        schema:
+          type: integer
+      - name: bidirectional
+        in: query
+        required: true
+        description: Whether a return flight should also be looked in tandem
+        schema:
+          type: string
+        example: "24/03/2001"
+    responses:
+        200:
+          description: Successful retrieval of flights
+          content:
+            application/json:    
+              schema:
+                example:
+                  flights: 
+                  {"cheap": [
+                      {
+                        "departure_time": "08:40",
+                        "arrival_time": "10:50",
+                        "date": "27/03/2001",
+                        "departure_location": "LPA",
+                        "arrival_location": "AOK",
+                        "price": 50
+                      },
+                      {
+                        "departure_time": "10:40",
+                        "arrival_time": "13:50",
+                        "date": "27/03/2001",
+                        "departure_location": "LPA",
+                        "arrival_location": "AOK",
+                        "price": 70
+                      },
+                      {
+                        "departure_time": "11:25",
+                        "arrival_time": "14:10",
+                        "date": "27/03/2001",
+                        "departure_location": "LPA",
+                        "arrival_location": "AOK",
+                        "price": 90
+                      }
+                    ],
+                    "fast": [
+                      {
+                        "departure_time": "11:25",
+                        "arrival_time": "11:55",
+                        "date": "27/03/2001",
+                        "departure_location": "LPA",
+                        "arrival_location": "AOK",
+                        "price": 200
+                      },
+                      {
+                        "departure_time": "11:25",
+                        "arrival_time": "12:06",
+                        "date": "27/03/2001",
+                        "departure_location": "LPA",
+                        "arrival_location": "AOK",
+                        "price": 230
+                      },
+                      {
+                        "departure_time": "11:25",
+                        "arrival_time": "12:15",
+                        "date": "27/03/2001",
+                        "departure_location": "LPA",
+                        "arrival_location": "AOK",
+                        "price": 300
+                      }
+                    ]
+                  }
+        400:
+          description: Something went wrong (you)
+          content:
+            application/json:    
+              schema:
+                example:
+                  flights: not_ok
+        500:
+          description: Something went wrong (not your fault!)
+          content:
+            application/json:    
+              schema:
+                example:
+                  flights: not_ok
   /flights:
     get:
       tags:
