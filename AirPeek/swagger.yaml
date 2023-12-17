@@ -2,6 +2,7 @@ openapi: "3.0.0"
 info:
   version: 1.0.0
   title: AirPeekAPI
+  description: Esta api sirve para controlar tanto los usuarios de Airpeek como los vuelos.
 servers:
   - url: http://localhost:8000
 tags:
@@ -193,7 +194,6 @@ paths:
               schema:
                 example:
                   update: not_ok
-  # we don't have this functionality
   /delete_account:
     delete:
       tags:
@@ -323,20 +323,20 @@ paths:
                           arrival_location: "AOK"
                           price: 300
           400:
-            description: Something went wrong (you)
+            description: Something went wrong (Client Error)
             content:
               application/json:    
                 schema:
                   example:
                     flights: not_ok
           500:
-            description: Something went wrong (not your fault!)
+            description: Something went wrong (Server Error)
             content:
               application/json:    
                 schema:
                   example:
                     flights: not_ok
-  /flights:
+  /user_flights:
     get:
       tags:
         - User
@@ -377,18 +377,51 @@ paths:
                 properties:
                   message:
                     type: string
-  /delete_flight/{id}:
+    post:
+      tags:
+        - User
+      summary: Add a flight ticket to user flights
+      description: Post a flight ticket to user flights
+      responses:
+        200:
+          description: The flight has been added.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    origin:
+                      type: string
+                    destination:
+                      type: string
+                    depart_date:
+                      type: string
+                      format: date-time
+                    return_date:  
+                      type: string
+                      format: date-time
+                    value:  ## Precio.
+                      type: number
+                    number_of_changes: ## Número de transbordos.
+                      type: integer
+        404:
+          description: No flights found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
     delete:
       tags:
         - User
       summary: Delete a flight
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The ID of the flight to delete
-          schema:
-            type: integer
+      description: Delete a flight from user flights
       responses:
         200:
           description: Flight deleted
@@ -404,7 +437,7 @@ paths:
               schema:
                 example:
                   message: Flight not found
-  /special-offers:
+  /special_offers:
     get:
       tags:
         - Flights
