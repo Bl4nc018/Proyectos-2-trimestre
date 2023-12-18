@@ -40,20 +40,13 @@ paths:
               schema:
                 example:
                   token: 19273348274832
-        404:
-          description: The email doesn't exist
+        400:
+          description: The content of one of the parameters is invalid ## Uno de los campos es inválido.
           content:
             application/json:
               schema:
                 example:
-                  token: Email already registered
-        401:
-          description: The email or the password are not valid
-          content:
-            application/json:
-              schema:
-                example:
-                  token: Invalid email or password
+                  token: One of the fields is invalid
   /register:
     post:
       tags:
@@ -102,12 +95,19 @@ paths:
                 example:
                   register: ok
         400:
-          description: Any parameter is not valid
+          description: One of the parameters is not valid
           content:
             application/json:    
               schema:
                 example:
                   register: not_ok
+        409:
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                example:
+                  register: already_exists
   /profile:
     get:
       tags:
@@ -123,6 +123,10 @@ paths:
               schema:
                 type: object
                 properties:
+                  image:
+                    schema:
+                      type: string
+                      format: binary
                   name:
                     type: string
                   email:
@@ -131,13 +135,6 @@ paths:
                     type: string
                   birthdate:
                     type: string
-        400:
-          description: Any parameter is not valid
-          content:
-            application/json:    
-              schema:
-                example:
-                  message: not_ok
   /edit_profile:
     put:
       tags:
@@ -179,6 +176,13 @@ paths:
           schema:
             type: string
           example: "24/03/2001"
+        - name: image
+          in: query
+          required: false
+          description: The user's profile image
+          schema:
+            type: string
+            format: binary 
       responses:
         200:
           description: User profile updated
@@ -342,32 +346,34 @@ paths:
         - User
       summary: Get all flights added to user
       description: Returns a list of all flights
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: A list of flights
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    origin:
-                      type: string
-                    destination:
-                      type: string
-                    depart_date:
-                      type: string
-                      format: date-time
-                    return_date:  
-                      type: string
-                      format: date-time
-                    value:  ## Precio.
-                      type: number
-                    number_of_changes: ## Número de transbordos.
-                      type: integer
+                example:
+                  flights: 
+                    - departure_time: "08:40"
+                      arrival_time: "10:50"
+                      date: "27/03/2001"
+                      departure_location: "LPA"
+                      arrival_location: "AOK"
+                      id: "123123y17887dsfjibq881"
+                    - departure_time: "10:40"
+                      arrival_time: "13:50"
+                      date: "27/03/2001"
+                      departure_location: "LPA"
+                      arrival_location: "AOK"
+                      id: "123123y17887dsfjibq881"
+                    - departure_time: "11:25"
+                      arrival_time: "14:10"
+                      date: "27/03/2001"
+                      departure_location: "LPA"
+                      arrival_location: "AOK"
+                      id: "123123y17887dsfjibq881"
         404:
           description: No flights found
           content:
@@ -377,39 +383,31 @@ paths:
                 properties:
                   message:
                     type: string
-    post:
+    put:
       tags:
         - User
       summary: Add a flight ticket to user flights
       description: Post a flight ticket to user flights
+      security:
+        - bearerAuth: []
+      parameters:
+          - name: id
+            in: query
+            required: true
+            description: Flight code
+            schema:
+              type: string
+              example: "1293761yyr1237a"
       responses:
         200:
-          description: The flight has been added.
+          description: Flight added correctly
           content:
-            application/json:
+            application/json:    
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    origin:
-                      type: string
-                    destination:
-                      type: string
-                    depart_date:
-                      type: string
-                      format: date-time
-                    return_date:  
-                      type: string
-                      format: date-time
-                    value:  ## Precio.
-                      type: number
-                    number_of_changes: ## Número de transbordos.
-                      type: integer
-        404:
-          description: No flights found
+                example:
+                  flights: ok
+        500:
+          description: Server error, not your fault
           content:
             application/json:
               schema:
@@ -422,6 +420,8 @@ paths:
         - User
       summary: Delete a flight
       description: Delete a flight from user flights
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: Flight deleted
@@ -430,8 +430,8 @@ paths:
               schema:
                 example:
                   delete: Flight deleted
-        404:
-          description: Flight not found
+        500:
+          description: Server error, not your fault
           content:
             application/json:    
               schema:
@@ -449,26 +449,29 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    origin:
-                      type: string
-                    destination:
-                      type: string
-                    depart_date:
-                      type: string
-                      format: date-time
-                    return_date: 
-                      type: string
-                      format: date-time
-                    value:  ## Precio.
-                      type: number
-                    number_of_changes: ## Número de transbordos.
-                      type: integer
+                example:
+                  flights: 
+                    - departure_time: "08:40"
+                      arrival_time: "10:50"
+                      date: "27/03/2001"
+                      departure_location: "LPA"
+                      arrival_location: "AOK"
+                      price: 85
+                      id: "123123y17887dsfjibq881"
+                    - departure_time: "10:40"
+                      arrival_time: "13:50"
+                      date: "27/03/2001"
+                      departure_location: "LPA"
+                      arrival_location: "AOK"
+                      price: 80
+                      id: "123123y17887dsfjibq881"
+                    - departure_time: "11:25"
+                      arrival_time: "14:10"
+                      date: "27/03/2001"
+                      departure_location: "LPA"
+                      arrival_location: "AOK"
+                      price: 90
+                      id: "123123y17887dsfjibq881"
         404:
           description: No special offers found
           content:
@@ -478,3 +481,5 @@ paths:
                 properties:
                   message:
                     type: string
+
+
