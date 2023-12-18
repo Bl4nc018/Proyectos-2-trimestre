@@ -11,7 +11,7 @@ tags:
   - name: Flights
     description: Flights info
 paths:
-  /login:
+  /user/login:
     post:
       tags:
         - User
@@ -47,7 +47,14 @@ paths:
               schema:
                 example:
                   token: One of the fields is invalid
-  /register:
+        401:
+          description: Unauthorized
+          content:
+            application/json:    
+              schema:
+                example:
+                  message: Unauthorized
+  /user/register:
     post:
       tags:
         - User
@@ -107,8 +114,9 @@ paths:
             application/json:
               schema:
                 example:
-                  register: already_exists
-  /profile:
+                  register: already_exist
+
+  /user:
     get:
       tags:
         - User
@@ -124,7 +132,6 @@ paths:
                 type: object
                 properties:
                   image:
-                    schema:
                       type: string
                       format: binary
                   name:
@@ -135,7 +142,13 @@ paths:
                     type: string
                   birthdate:
                     type: string
-  /edit_profile:
+        401:
+          description: Unauthorized
+          content:
+            application/json:    
+              schema:
+                example:
+                  message: Unauthorized
     put:
       tags:
         - User
@@ -198,7 +211,20 @@ paths:
               schema:
                 example:
                   update: not_ok
-  /delete_account:
+        401:
+          description: Unauthorized
+          content:
+            application/json:    
+              schema:
+                example:
+                  message: Unauthorized
+        409:
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                example:
+                  update: already_exist
     delete:
       tags:
         - User
@@ -220,7 +246,125 @@ paths:
               schema:
                 example:
                   message: Unauthorized
-  /search_flights:
+  /user/flights:
+    get:
+      tags:
+        - User
+      summary: Get all flights added to user
+      description: Returns a list of all flights
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: A list of flights
+          content:
+            application/json:
+              schema:
+                example:
+                  flights: 
+                    - departure_time: "08:40"
+                      arrival_time: "10:50"
+                      date: "27/03/2001"
+                      departure_location: "LPA"
+                      arrival_location: "AOK"
+                      id: "PG0765"
+                    - departure_time: "10:40"
+                      arrival_time: "13:50"
+                      date: "27/03/2001"
+                      departure_location: "LPA"
+                      arrival_location: "AOK"
+                      id: "GU1897"
+                    - departure_time: "11:25"
+                      arrival_time: "14:10"
+                      date: "27/03/2001"
+                      departure_location: "LPA"
+                      arrival_location: "AOK"
+                      id: "BY2940"
+        404:
+          description: No flights found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        401:
+          description: Unauthorized
+          content:
+            application/json:    
+              schema:
+                example:
+                  message: Unauthorized
+    put:
+      tags:
+        - User
+      summary: Add a flight ticket to user flights
+      description: Post a flight ticket to user flights
+      security:
+        - bearerAuth: []
+      parameters:
+          - name: id
+            in: query
+            required: true
+            description: Flight code
+            schema:
+              type: string
+              example: "1293761yyr1237a"
+      responses:
+        200:
+          description: Flight added correctly
+          content:
+            application/json:    
+              schema:
+                example:
+                  flights: ok
+        500:
+          description: Server error, not your fault
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        401:
+          description: Unauthorized
+          content:
+            application/json:    
+              schema:
+                example:
+                  message: Unauthorized
+    delete:
+      tags:
+        - User
+      summary: Delete a flight
+      description: Delete a flight from user flights
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Flight deleted
+          content:
+            application/json:    
+              schema:
+                example:
+                  delete: Flight deleted
+        500:
+          description: Server error, not your fault
+          content:
+            application/json:    
+              schema:
+                example:
+                  message: Flight not found
+        401:
+          description: Unauthorized
+          content:
+            application/json:    
+              schema:
+                example:
+                  message: Unauthorized
+  /search:
     get:
       tags:
         - Flights
@@ -340,103 +484,6 @@ paths:
                 schema:
                   example:
                     flights: not_ok
-  /user_flights:
-    get:
-      tags:
-        - User
-      summary: Get all flights added to user
-      description: Returns a list of all flights
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: A list of flights
-          content:
-            application/json:
-              schema:
-                example:
-                  flights: 
-                    - departure_time: "08:40"
-                      arrival_time: "10:50"
-                      date: "27/03/2001"
-                      departure_location: "LPA"
-                      arrival_location: "AOK"
-                      id: "123123y17887dsfjibq881"
-                    - departure_time: "10:40"
-                      arrival_time: "13:50"
-                      date: "27/03/2001"
-                      departure_location: "LPA"
-                      arrival_location: "AOK"
-                      id: "123123y17887dsfjibq881"
-                    - departure_time: "11:25"
-                      arrival_time: "14:10"
-                      date: "27/03/2001"
-                      departure_location: "LPA"
-                      arrival_location: "AOK"
-                      id: "123123y17887dsfjibq881"
-        404:
-          description: No flights found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-    put:
-      tags:
-        - User
-      summary: Add a flight ticket to user flights
-      description: Post a flight ticket to user flights
-      security:
-        - bearerAuth: []
-      parameters:
-          - name: id
-            in: query
-            required: true
-            description: Flight code
-            schema:
-              type: string
-              example: "1293761yyr1237a"
-      responses:
-        200:
-          description: Flight added correctly
-          content:
-            application/json:    
-              schema:
-                example:
-                  flights: ok
-        500:
-          description: Server error, not your fault
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-    delete:
-      tags:
-        - User
-      summary: Delete a flight
-      description: Delete a flight from user flights
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: Flight deleted
-          content:
-            application/json:    
-              schema:
-                example:
-                  delete: Flight deleted
-        500:
-          description: Server error, not your fault
-          content:
-            application/json:    
-              schema:
-                example:
-                  message: Flight not found
   /special_offers:
     get:
       tags:
@@ -457,21 +504,21 @@ paths:
                       departure_location: "LPA"
                       arrival_location: "AOK"
                       price: 85
-                      id: "123123y17887dsfjibq881"
+                      id: "BY2940"
                     - departure_time: "10:40"
                       arrival_time: "13:50"
                       date: "27/03/2001"
                       departure_location: "LPA"
                       arrival_location: "AOK"
                       price: 80
-                      id: "123123y17887dsfjibq881"
+                      id: "UT3956"
                     - departure_time: "11:25"
                       arrival_time: "14:10"
                       date: "27/03/2001"
                       departure_location: "LPA"
                       arrival_location: "AOK"
                       price: 90
-                      id: "123123y17887dsfjibq881"
+                      id: "AS4060"
         404:
           description: No special offers found
           content:
